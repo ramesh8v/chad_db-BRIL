@@ -1,0 +1,273 @@
+<!DOCTYPE html >
+<html lang="en" ng-app="chadDB">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>BRIL Database</title>
+
+   
+    <link href="static/css/bootstrap.css" rel="stylesheet">
+    <link href="static/css/heroic-features.css" rel="stylesheet">
+    <link href="static/css/angular.rangeSlider.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+    <link href="static/css/custom.css" rel="stylesheet">
+
+   <script src="{{ url_for('static', filename = 'js/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/bootstrap.min.js') }}"></script>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script type="text/javascript" src="static/js/angular.min.js"></script>
+    <script type="text/javascript" src="static/js/app.js"></script>
+    <script type="text/javascript" src="static/js/angular.rangeSlider.js"></script>
+    <script type="text/javascript" src="static/js/custom.js"></script>
+    <script src="https://cdn.rawgit.com/zenorocha/clipboard.js/master/dist/clipboard.min.js"></script>
+    <script type="text/javascript" src="static/js/ngclipboard.js"></script>
+    
+
+
+</head>
+
+<body ng-controller = "myCtrl">
+
+<div class="container">
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="collapse navbar-collapse" id="nav-bar">
+                <a class="navbar-brand page-scroll" href="/">BRIL Database</a>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        <li>
+                            <a href="/db">Database</a>
+                        </li>
+                        <li>
+                            <a href="#" data-toggle="modal" data-target="#contactModal">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+    <div class="container" class="wrapper">
+    <div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Enter known marker name or select region:</h3> </div>
+                <div class="panel-body">
+                    <form >
+                        <div class="row">
+                           <div class="col-sm-3">
+                                <fieldset class="form-group">
+                                <label for="for_marker">90K Infinium Marker Name</label>
+                                <input class="form-control" id="marker" class="top-padding" ng-model= "marker" placeholder="Enter Marker Name">
+                                </fieldset>
+                           </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for="upload-form">Chromosome</label>
+                                        <select class="form-control" id="chrome" name="chrome" ng-model="chrome">
+                                            <option ng-repeat="chromes in chromelist">{a chromes a}</option>
+                                        </select>
+                                    </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <fieldset class="form-group">
+                                <b>Location(cM)</b>
+                                <span range-slider min= "sliderMin" max="sliderMax" model-min="demo1.min" model-max="demo1.max"></span>
+                                </fieldset>
+                            </div>
+                            <div class="col-sm-2" center-block>
+                                <br>
+                                <button type="submit" class="btn btn-primary btn-space" ng-click="submit()">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+        </div>
+    </div>
+    <!----<div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Chad: Select title 2</h3> </div>
+            <div  class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Marker</th>
+                        <th>Chromosome</th>
+                        <th>Distance</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <tr>{% for i in intdata %}</tr>
+                            {% for j in i%}
+                                <td>{{j}}</td>
+                            {% endfor %}
+                            <td><button type="button" class="btn btn-primary" ng-click="updateval('{{i[0]}}')" data-toggle="modal" data-target="#contactModal">GO {a check a} <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"> </span></button> </td>
+                        {% endfor %}
+                    <tr>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+    </div>------>
+    <div class="panel panel-default" ng-show="datatab == 'show'">
+        <!-----<div class="panel-heading">
+            <h3 class="panel-title"></h3> </div>-------------->
+            <div  class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Marker</th>
+                        <th>Chromosome</th>
+                        <th>Distance</th>
+                        <th></th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody ng-repeat = "i in tableres track by $index" >
+                    <tr>
+                    <td ng-repeat = "j in i track by $index">
+                        <span>{a j a}</span>
+                    </td>
+                    <td><button type="button" class="btn btn-primary" ng-click="updateval(i[0])" data-toggle="modal" data-target="#dataModal">BRIL Line Details {a check a} <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"> </span></button> </td>
+                    <td><button type="button" class="btn btn-primary" ng-click="updateseq(i[0])" data-toggle="modal" data-target="#seqModal">Sequence {a check a} <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"> </span></button> </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+    
+
+    <footer class="navbar navbar-default footer navbar-fixed-bottom">
+        <div class="row">
+            <div class="col-lg-4">
+                <p>Copyright &copy; UC Davis 2016</p>
+            </div>
+        </div>
+    </footer>
+    <!-- /.container -->
+    </div>
+</div>
+
+</body>
+
+<div class="modal fade dataModal" id="dataModal" role="dialog">
+    <div class="modal-dialog">
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title text-center">{a intlist.Marker a}</h4>
+          <b>Chromosome: </b><span></span>{a intlist.Chromosome a}</span><br>
+          <b>Distance: </b><span></span>{a intlist.Distance a}</span>
+          <br><br>
+          <div class="panel panel-default">
+              <div class="panel-heading">
+              <h3 class="panel-title">Limit the parental contribution for BRIL lines</h3>
+              </div>
+              <div class=panel-body>
+                  <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="upload-form">Select:</label><br>
+                                    <label class="radio-inline"><input type="radio" name="selmodal" ng-model="iumodal" value="Durum">Langdon</label>
+                                    <label class="radio-inline"><input type="radio" name="selmodal" ng-model="iumodal" value="Dicoccoides">Dicoccoides</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <fieldset class="form-group">
+                            <b>Percentage:</b>
+                            <span range-slider min="iusliderMin" max="iusliderMax" model-min="iuslide.min" model-max="iuslide.max"></span>
+                            </fieldset>
+                        </div>
+                        <div class="col-sm-3" center-block>
+                            <br>
+                            <button type="submit" class="btn btn-primary btn-space" ng-click="updatepercent()">Submit</button>
+                        </div>
+                  </div>
+              </div>
+              <div class="panel-heading">
+              <h3 class="panel-title">The two columns below list lines carrying the designated allele from Langdon or Dicoccoides</h3>
+              </div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <table class="table table-hover table-bordered">
+            <thead class="thead-default">
+              <tr>
+                <th class="text-center">Langdon</th>
+                <th class="text-center">Dicoccoides</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat = "i in points track by $index" >
+                    <td class="text-center" ng-if="intlist.LGD_g[i]"> <strong>{a intlist.LGD_g[i] a} </strong><br> <i>Dicoccoides: {a percent[intlist.LGD_g[i]].Dicoccoides a}%, Langdon: {a percent[intlist.LGD_g[i]].Durum a}% </i></td>
+                  <td class="text-center" ng-if="intlist.DIC_g[i]"><strong>{a intlist.DIC_g[i] a}</strong><br> <i>Dicoccoides: {a percent[intlist.DIC_g[i]].Dicoccoides a}%, Langdon: {a percent[intlist.DIC_g[i]].Durum a}% </i></td>
+                </tr>
+              </tbody>
+        </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="modal fade" id="seqModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Sequence of {a seq[1] a}</h4>
+        </div>
+        <div class="modal-body">
+            <button class="btn btn-default copy" id='copy' ngclipboard data-clipboard-text="{a seq[2] a}" data-toggle="tooltip" data-placement="top" title="Click to copy">
+                Copy to clipboard
+            </button><br><br>
+            <div class="well ">
+               <h5 style="word-wrap: break-word">{a seq[2] a}</h5> 
+            </div>
+                
+
+          <h5></h5>
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal fade" id="contactModal" role="dialog">
+    <div class="modal-dialog">
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Contact Us</h4>
+        </div>
+        <div class="modal-body">
+          <h5>For website or data related questions contact: Chad Jorgensen(cmjorgensen@ucdavis.edu)</h5>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+</html>
